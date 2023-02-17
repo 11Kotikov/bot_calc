@@ -9,7 +9,7 @@ from my_token import my_token
 
 bot = telebot.TeleBot(my_token)
 
-example = ''
+sample = ''
 
 
 @bot.message_handler(commands=['calc'])
@@ -19,28 +19,28 @@ def calc_command(message: types.Message):
 
 @bot.callback_query_handler(lambda callback: callback.data)
 def get_value(callback: types.CallbackQuery):
-    global example
+    global sample
     if callback.data == '=':
-        list_example = ss.get_data(example)
+        list_example = ss.get_data(sample)
         result = calc.get_result(list_example)
-        bot.edit_message_text(f'{example} = {result}', callback.message.chat.id, callback.message.id,
+        bot.edit_message_text(f'{sample} = {result}', callback.message.chat.id, callback.message.id,
                               reply_markup=ui.keyboard())
-        example = ''
+        sample = ''
     elif callback.data == 'выход':
         bot.delete_message(callback.message.chat.id, callback.message.id)
-        example = ''
+        sample = ''
     elif callback.data == '<=':
-        if len(example) == 1:
-            example = ''
+        if len(sample) == 1:
+            sample = ''
             bot.edit_message_text(
                 '0', callback.message.chat.id, callback.message.id, reply_markup=ui.keyboard())
         else:
-            example = example[:-1]
-            bot.edit_message_text(example, callback.message.chat.id,
+            sample = sample[:-1]
+            bot.edit_message_text(sample, callback.message.chat.id,
                                   callback.message.id, reply_markup=ui.keyboard())
     else:
-        example += callback.data
-        bot.edit_message_text(example, callback.message.chat.id,
+        sample += callback.data
+        bot.edit_message_text(sample, callback.message.chat.id,
                               callback.message.id, reply_markup=ui.keyboard())
 
 
