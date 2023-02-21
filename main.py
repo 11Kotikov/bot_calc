@@ -5,7 +5,7 @@ import user_interface as ui
 import set_sample as ss
 import calculations as calc
 from my_token import my_token
-
+import logger as log
 
 bot = telebot.TeleBot(my_token)
 
@@ -22,7 +22,9 @@ def get_value(callback: types.CallbackQuery):
     global sample
     if callback.data == '=':
         list_example = ss.get_data(sample)
+        log.add_log(f'User typed {list_example}')
         result = calc.get_result(list_example)
+
         bot.edit_message_text(f'{sample} = {result}', callback.message.chat.id, callback.message.id,
                               reply_markup=ui.keyboard())
         sample = ''
